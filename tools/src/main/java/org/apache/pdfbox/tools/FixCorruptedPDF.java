@@ -34,7 +34,7 @@ import org.apache.pdfbox.pdmodel.common.PDStream;
  *
  * @author Michael Traut
  */
-public class WriteDecodedDoc
+public class FixCorruptedPDF
 {
 
     @SuppressWarnings({"squid:S2068"})
@@ -44,7 +44,7 @@ public class WriteDecodedDoc
     /**
      * Constructor.
      */
-    public WriteDecodedDoc()
+    public FixCorruptedPDF()
     {
         super();
     }
@@ -65,11 +65,6 @@ public class WriteDecodedDoc
         try (PDDocument doc = Loader.loadPDF(new File(in), password))
         {
             doc.setAllSecurityToBeRemoved(true);
-            COSDocument cosDocument = doc.getDocument();
-            cosDocument.getXrefTable().keySet().stream()
-                    .forEach(o -> processObject(cosDocument.getObjectFromPool(o), skipImages));
-            doc.getDocumentCatalog();
-            doc.getDocument().setIsXRefStream(false);
             doc.save( out );
         }
     }
@@ -115,7 +110,7 @@ public class WriteDecodedDoc
         // suppress the Dock icon on OS X
         System.setProperty("apple.awt.UIElement", "true");
 
-        WriteDecodedDoc app = new WriteDecodedDoc();
+        FixCorruptedPDF app = new FixCorruptedPDF();
         @SuppressWarnings({"squid:S2068"})
         String password = "";
         String pdfFile = null;
@@ -162,7 +157,7 @@ public class WriteDecodedDoc
         }
     }
 
-    private static String calculateOutputFilename(String filename) 
+    private static String calculateOutputFilename(String filename)
     {
         String outputFilename;
         if (filename.toLowerCase().endsWith(".pdf"))
@@ -176,19 +171,19 @@ public class WriteDecodedDoc
         outputFilename += "_unc.pdf";
         return outputFilename;
     }
-    
+
     /**
      * This will print out a message telling how to use this example.
      */
     private static void usage()
     {
-        String message = "Usage: java -jar pdfbox-app-x.y.z.jar WriteDecodedDoc [options] <inputfile> [outputfile]\n"
+        String message = "Usage: java -jar pdfbox-app-x.y.z.jar FixCorruptedPDF [options] <inputfile> [outputfile]\n"
                 + "\nOptions:\n"
                 + "  -password <password> : Password to decrypt the document\n"
                 + "  -skipImages          : Don't uncompress images\n"
-                + "  <inputfile>          : The PDF document to be decompressed\n"
-                + "  [outputfile]         : The filename for the decompressed pdf\n";
-       
+                + "  <inputfile>          : The PDF document to be repaired\n"
+                + "  [outputfile]         : The filename for the repaired pdf\n";
+
         System.err.println(message);
         System.exit(1);
     }

@@ -22,15 +22,15 @@ import org.apache.pdfbox.debugger.PDFDebugger;
  * Simple wrapper around all the command line utilities included in PDFBox.
  * Used as the main class in the runnable standalone PDFBox jar.
  */
-public final class PDFBox 
+public final class PDFBox
 {
     private PDFBox()
     {
     }
-    
+
     /**
      * Main method.
-     * 
+     *
      * @param args command line arguments
      * @throws java.lang.Exception
      */
@@ -39,7 +39,7 @@ public final class PDFBox
         // suppress the Dock icon on OS X
         System.setProperty("apple.awt.UIElement", "true");
 
-        if (args.length > 0) 
+        if (args.length > 0)
         {
             String command = args[0];
             String[] arguments = new String[args.length - 1];
@@ -85,8 +85,8 @@ public final class PDFBox
                 case "TextToPDF":
                     TextToPDF.main(arguments);
                     break;
-                case "WriteDecodedDoc":
-                    WriteDecodedDoc.main(arguments);
+                case "FixCorruptedPDF":
+                    FixCorruptedPDF.main(arguments);
                     break;
                 default:
                     showMessageAndExit();
@@ -97,13 +97,13 @@ public final class PDFBox
                 System.exit(0);
             }
         }
-        else 
+        else
         {
             showMessageAndExit();
         }
     }
 
-    private static void showMessageAndExit() 
+    private static void showMessageAndExit()
     {
         String message = "PDFBox version: \""+ Version.getVersion()+ "\""
                 + "\nUsage: java -jar pdfbox-app-x.y.z.jar <command> <args..>\n"
@@ -121,8 +121,8 @@ public final class PDFBox
                 + "  PDFSplit\n"
                 + "  PDFToImage\n"
                 + "  TextToPDF\n"
-                + "  WriteDecodedDoc";
-        
+                + "  FixCorruptedPDF";
+
         System.err.println(message);
         System.exit(1);
     }
